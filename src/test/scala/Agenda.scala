@@ -28,19 +28,18 @@ class Agenda (val meetings: List[Meeting]) {
       })
     }
 
-    printLineLarge
+    println()
     printHead(s"$day:")
     if(meetingsForTheDay.length > 0){
       if(meetingsAM.length > 0){
         printSub("AM Meetings:")
-        printLineSmall
         meetingPrinter(meetingsAM)
       }else{
         println("There are no AM meetings scheduled")
       }
+      printLineSmall
       if(meetingsPM.length > 0){
         printSub("PM Meetings:")
-        printLineSmall
         meetingPrinter(meetingsPM)
       }else{
         println("There are no PM meetings scheduled")
@@ -48,9 +47,8 @@ class Agenda (val meetings: List[Meeting]) {
     }else{
       println(s"No meetings for $day")
     }
-
-    printLineLarge
     println()
+    printLineLarge
   }
 }
 
@@ -71,3 +69,8 @@ object Main extends App {
   agenda.printDaySchedule("Thursday")
   agenda.printDaySchedule("Friday")
 }
+
+/*
+  notes:
+    * I'd again like to reduce the number of if/else statements used
+*/
