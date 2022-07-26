@@ -1,7 +1,7 @@
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
+class ReceiptPrinterTest extends AnyWordSpec with Matchers {
   val coffeeConnectionCafe = new CafeDetails(
     "The Coffee Connection",
     "123 Lakeside Way",
@@ -35,6 +35,20 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
         printer.receipt should include ("The Coffee Connection")
       }
       // add more tests here.
+      "has the correct quantity" in {
+        val printer = new ReceiptPrinter(
+          coffeeConnectionCafe,
+          Map("Cafe Latte" -> 3)
+        )
+        printer.receipt should include ("3x")
+      }
+      "projects the correct price" in {
+        val printer = new ReceiptPrinter(
+          coffeeConnectionCafe,
+          Map("Choc Mudcake" -> 2)
+        )
+        printer.receipt should include("£12.80")
+      }
     }
   }
 }
