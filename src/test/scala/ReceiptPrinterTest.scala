@@ -42,12 +42,24 @@ class ReceiptPrinterTest extends AnyWordSpec with Matchers {
         )
         printer.receipt should include ("3x")
       }
-      "projects the correct price" in {
+      "displays the correct total price" in {
         val printer = new ReceiptPrinter(
           coffeeConnectionCafe,
           Map("Choc Mudcake" -> 2)
         )
         printer.receipt should include("£12.80")
+      }
+      "Multiple order items" in {
+        val printer = new ReceiptPrinter(
+          coffeeConnectionCafe,
+          Map(
+            "Choc Mudcake" -> 1,
+            "Cafe Latte" -> 2
+          )
+        )
+        printer.receipt should include("Choc Mudcake")
+        printer.receipt should include("Cafe Latte")
+        printer.receipt should include("£15.90")
       }
     }
   }
