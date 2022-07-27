@@ -1,5 +1,7 @@
 import com.github.nscala_time.time.Imports._
 
+import scala.annotation.tailrec
+
 class CafeDetails (
   val shopName: String,
   val address: String,
@@ -36,17 +38,35 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   }
   def createOrderString(order: Map[String, Int]): String = {
     val orderKeys = order.keys.toArray
-    val columns = orderKeys.zipWithIndex.map{case(key,index) => {
-      val itemPrice = cafe.prices.filter(x => x._1 == key).values.toList.head
-      val itemQuantity = order.filter(x => x._1 == key).values.toList.head
-      def columnCost = gbpFormatter(itemPrice * itemQuantity)
-      if(index < orderKeys.length - 1){
-        s"${itemQuantity}x        |       $key        |       price: $columnCost"
-      }else{
-        s"${itemQuantity}x        |       $key        |       price: $columnCost\nTotal: "
+    @tailrec
+    def rows(currentRows: String, currentTotalCost: Double, count: Int): String = {
+
+      val isLastRow = count <= orderKeys.length
+      val newCount = count + 1
+      val itemName = orderKeys(count)
+
+      val itemPrice = cafe.prices.filter(x => x._1 == itemName).values.toList.head
+      val itemQuantity = order.filter(x => x._1 == itemName).values.toList.head
+
+      val newTotalCost = currentTotalCost + (cafe.prices.filter(x => x._1 == itemName).values.head * itemQuantity)
+
+      def rowCost: String = gbpFormatter(itemPrice * itemQuantity)
+      val columnTemplate = s"${itemQuantity}x        |       $itemName        |       price: $rowCost"
+      //loop through order keys and create a row from each key
+      def newRows: String = {
+        if (!isLastRow) {
+          currentRows + columnTemplate
+        } else {
+          currentRows + columnTemplate + s"\nTotal: ${gbpFormatter(newTotalCost)}"
+        }
       }
-    }}.mkString("\n")
-    columns
+      if(!isLastRow){
+        rows(newRows, newTotalCost, newCount)
+      }else{
+        newRows
+      }
+    }
+    rows("", 0.0, 0)
   }
   def receipt: String = {
     val name = s"${cafe.shopName}\n"
