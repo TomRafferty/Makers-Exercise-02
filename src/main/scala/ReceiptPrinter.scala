@@ -36,15 +36,17 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   }
   def createOrderString(order: Map[String, Int]): String = {
     val orderKeys = order.keys.toArray
-
-    val columns: Array[String] = orderKeys.map(key => {
+    val columns = orderKeys.zipWithIndex.map{case(key,index) => {
       val itemPrice = cafe.prices.filter(x => x._1 == key).values.toList.head
       val itemQuantity = order.filter(x => x._1 == key).values.toList.head
-      def totalCost = gbpFormatter(itemPrice * itemQuantity)
-
-      s"${itemQuantity}x        |       $key        |       total: $totalCost"
-    })
-    columns.mkString("\n")
+      def columnCost = gbpFormatter(itemPrice * itemQuantity)
+      if(index < orderKeys.length - 1){
+        s"${itemQuantity}x        |       $key        |       price: $columnCost"
+      }else{
+        s"${itemQuantity}x        |       $key        |       price: $columnCost\nTotal: "
+      }
+    }}.mkString("\n")
+    columns
   }
   def receipt: String = {
     val name = s"${cafe.shopName}\n"
@@ -53,8 +55,6 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
     val orderTime = s"${dateFormatter(DateTime.now())}\n"
     val orderStr = s"order:\n${createOrderString(order)}\n"
     s"$name$address$phone$orderTime$orderStr"
-    //TODO create function to loop order items into single string
-    //TODO add price printing function
   }
   println(receipt)
 }
