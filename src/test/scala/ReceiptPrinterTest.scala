@@ -35,34 +35,20 @@ class ReceiptPrinterTest extends AnyWordSpec with Matchers {
         printer.receipt should include ("The Coffee Connection")
       }
       // add more tests here.
-      "has the correct quantity" in {
+      "contains the address of the cafe" in {
         val printer = new ReceiptPrinter(
           coffeeConnectionCafe,
-          Map("Cafe Latte" -> 3)
+          Map("Cafe Latte" -> 1)
         )
-        printer.receipt should include ("3x")
+        printer.receipt should include ("123 Lakeside Way")
       }
-      "displays the correct total price" in {
+      "contains the phone number of the cafe" in {
         val printer = new ReceiptPrinter(
           coffeeConnectionCafe,
-          Map("Choc Mudcake" -> 2)
+          Map("Cafe Latte" -> 1)
         )
-        printer.receipt should include("£12.80")
+        printer.receipt should include ("16503600708")
       }
-      "Multiple order items" in {
-        val printer = new ReceiptPrinter(
-          coffeeConnectionCafe,
-          Map(
-            "Choc Mudcake" -> 1,
-            "Cafe Latte" -> 2,
-            "Tea" -> 2
-          )
-        )
-        printer.receipt should include("Choc Mudcake")
-        printer.receipt should include("Cafe Latte")
-        printer.receipt should include("Tea")
-        printer.receipt should include("£19.55")
       }
-    }
   }
 }
