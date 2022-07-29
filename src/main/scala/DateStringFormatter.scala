@@ -21,7 +21,7 @@ object DateStringFormatter{
     val spltStepB = passedDate.split("-").filter(x => x != "-") // Array("2022", "07", "27")
     val day = spltStepB(2)
     val month = spltStepB(1)
-    val year = spltStepB(2)
+    val year = spltStepB(0)
     //----------------------
     //time formatting:
     val spltStepC = passedTime.split(":") //Array("14", ":", "35", ":", "00Z")
