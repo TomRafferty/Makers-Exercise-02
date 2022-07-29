@@ -1,5 +1,3 @@
-import com.github.nscala_time.time.Imports._
-
 class CafeDetails (
   val shopName: String,
   val address: String,
@@ -22,6 +20,9 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
    */
 
   def receipt: String = {
-    cafe.shopName + cafe.address + cafe.phone
+    val receipt = cafe.shopName + cafe.address + cafe.phone + DateStringFormatter.format(DateFactory.create())
+    println(receipt)
+    println(s"UTC print: ${DateStringFormatter.formatUTC(DateFactory.create())}")
+    receipt
   }
 }

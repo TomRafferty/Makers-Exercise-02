@@ -1,3 +1,5 @@
+import com.github.nscala_time.time.Imports._
+
 import java.time.Instant
 
 object DateStringFormatter{
@@ -25,7 +27,8 @@ object DateStringFormatter{
     //----------------------
     //time formatting:
     val spltStepC = passedTime.split(":") //Array("14", ":", "35", ":", "00Z")
-    val time = s"${spltStepC(0)}:${spltStepC(1)}" //"14:35"
+    val ukTime = s"${spltStepC(0).toInt + 1}"
+    val time = s"$ukTime:${spltStepC(1)}" //"14:35"
     //----------------------
     //return formatted date time string:
     f"""
@@ -36,6 +39,10 @@ object DateStringFormatter{
   }
 
   def format(dateString:Instant):String ={
+    //default UK -- would be changed to local time zone
     formatter(dateString.toString)
+  }
+  def formatUTC(dateString: Instant) = {
+    new DateTime(dateString.toString)
   }
 }
