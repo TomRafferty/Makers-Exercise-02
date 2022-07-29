@@ -4,8 +4,6 @@ import org.scalatest.wordspec.AnyWordSpec
 import java.time.{Clock, Instant, ZoneId}
 
 class DateFactoryTest extends AnyWordSpec with Matchers {
-  val newDate = DateFactory
-
   "A DateFactory" should {
     "create an new Instant" which {
       "is an Instant" in {
