@@ -22,7 +22,6 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   def receipt: String = {
     val receipt = cafe.shopName + cafe.address + cafe.phone + DateStringFormatter.format(DateFactory.create())
     println(receipt)
-    println(s"UTC print: ${DateStringFormatter.formatUTC(DateFactory.create())}")
     receipt
   }
 }
